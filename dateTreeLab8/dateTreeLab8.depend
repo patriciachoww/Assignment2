@@ -1,0 +1,84 @@
+# depslib dependency file v1.0
+1774364364 source:c:\users\windows 11\downloads\ict283 exercise9b  - patricia chow 35633468\datetreelab8\csvparser.cpp
+	"CsvParser.h"
+	<sstream>
+
+1774364364 c:\users\windows 11\downloads\ict283 exercise9b  - patricia chow 35633468\datetreelab8\csvparser.h
+	<string>
+	<fstream>
+	"IDataSource.h"
+	"Vector.h"
+	"Map.h"
+
+1774364364 c:\users\windows 11\downloads\ict283 exercise9b  - patricia chow 35633468\datetreelab8\idatasource.h
+	<string>
+
+1774364364 c:\users\windows 11\downloads\ict283 exercise9b  - patricia chow 35633468\datetreelab8\vector.h
+	<stdexcept>
+
+1774364364 c:\users\windows 11\downloads\ict283 exercise9b  - patricia chow 35633468\datetreelab8\map.h
+	"Vector.h"
+	<stdexcept>
+
+1774364363 source:c:\users\windows 11\downloads\ict283 exercise9b  - patricia chow 35633468\datetreelab8\datasourcefactory.cpp
+	"DataSourceFactory.h"
+	"CsvParser.h"
+
+1774364364 c:\users\windows 11\downloads\ict283 exercise9b  - patricia chow 35633468\datetreelab8\datasourcefactory.h
+	"IDataSource.h"
+	<string>
+
+1774364364 source:c:\users\windows 11\downloads\ict283 exercise9b  - patricia chow 35633468\datetreelab8\date.cpp
+	"Date.h"
+
+1774364364 c:\users\windows 11\downloads\ict283 exercise9b  - patricia chow 35633468\datetreelab8\date.h
+	<iostream>
+	<string>
+
+1774364364 source:c:\users\windows 11\downloads\ict283 exercise9b  - patricia chow 35633468\datetreelab8\datetimeparserfactory.cpp
+	"DateTimeParserFactory.h"
+	"DMYParser.h"
+
+1774364364 c:\users\windows 11\downloads\ict283 exercise9b  - patricia chow 35633468\datetreelab8\datetimeparserfactory.h
+	"IDateTimeParser.h"
+
+1774364364 c:\users\windows 11\downloads\ict283 exercise9b  - patricia chow 35633468\datetreelab8\idatetimeparser.h
+	<string>
+	"Date.h"
+	"Time.h"
+
+1774364364 c:\users\windows 11\downloads\ict283 exercise9b  - patricia chow 35633468\datetreelab8\time.h
+
+1774364364 c:\users\windows 11\downloads\ict283 exercise9b  - patricia chow 35633468\datetreelab8\dmyparser.h
+	"IDateTimeParser.h"
+
+1774364364 source:c:\users\windows 11\downloads\ict283 exercise9b  - patricia chow 35633468\datetreelab8\dmyparser.cpp
+	"DMYParser.h"
+	<cstdlib>
+
+1774364364 source:c:\users\windows 11\downloads\ict283 exercise9b  - patricia chow 35633468\datetreelab8\main.cpp
+	"../Bst.h"
+	"Date.h"
+	"DMYParser.h"
+	"WeatherFormat.h"
+	"CsvParser.h"
+	"Vector.h"
+	<iostream>
+	<fstream>
+	<string>
+
+1774434569 c:\users\windows 11\downloads\ict283 exercise9b  - patricia chow 35633468\bst.h
+	<iostream>
+
+1774364364 c:\users\windows 11\downloads\ict283 exercise9b  - patricia chow 35633468\datetreelab8\weatherformat.h
+	<string>
+	"Date.h"
+	"Time.h"
+	"IDateTimeParser.h"
+
+1774364364 source:c:\users\windows 11\downloads\ict283 exercise9b  - patricia chow 35633468\datetreelab8\time.cpp
+	"Time.h"
+
+1774364364 source:c:\users\windows 11\downloads\ict283 exercise9b  - patricia chow 35633468\datetreelab8\weatherformat.cpp
+	"WeatherFormat.h"
+

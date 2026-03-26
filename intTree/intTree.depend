@@ -1,9 +1,0 @@
-# depslib dependency file v1.0
-1773871838 source:e:\school\bdabi&as\ict283 - data structures and abstractions\week 9\project\inttree\main.cpp
-	"../Bst.h"
-	<iostream>
-	<fstream>
-	<string>
-
-1773874028 e:\school\bdabi&as\ict283 - data structures and abstractions\week 9\project\bst.h
-	<iostream>

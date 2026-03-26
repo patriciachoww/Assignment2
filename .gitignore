@@ -1,0 +1,8 @@
+.DS_Store
+*.layout
+*.depend
+bin/
+obj/
+*.exe
+*.o
+gmon.out

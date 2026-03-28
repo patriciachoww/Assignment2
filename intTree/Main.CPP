@@ -17,10 +17,7 @@
  * @brief Prints an integer value during traversal.
  * @param value Integer to print.
  */
-void PrintInt(const int& value)
-{
-    std::cout << value << " ";
-}
+void PrintInt(const int& value);
 
 int main()
 {
@@ -84,4 +81,13 @@ int main()
     std::cout << std::endl;
 
     return 0;
+}
+
+/**
+ * @brief Prints an integer value during traversal.
+ * @param value Integer to print.
+ */
+void PrintInt(const int& value)
+{
+    std::cout << value << " ";
 }

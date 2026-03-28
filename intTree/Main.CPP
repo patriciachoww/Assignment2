@@ -1,20 +1,20 @@
 /**
- * @file main.cpp
- * @brief Demo program for Integer Binary Search Tree (BST).
+ * @file Main.CPP
+ * @brief Demonstrates Integer Binary Search Tree (BST) operations.
  *
  * Reads integers from file, inserts into BST,
- * and demonstrates operations using traversal callbacks.
+ * and performs traversal and search using callbacks.
  *
  * @author Patricia
  * @date 28/03/2026
  */
 
-#include "../Bst.H"
+#include "../Bst.h"
 #include <iostream>
 #include <fstream>
 
 /**
- * @brief Print integer value (callback function).
+ * @brief Prints an integer value during traversal.
  * @param value Integer to print.
  */
 void PrintInt(const int& value)
@@ -24,20 +24,20 @@ void PrintInt(const int& value)
 
 int main()
 {
-    // open input file
+    // Open input file
     std::ifstream inputFile("data/integers.txt");
 
-    // check file opened
+    // Check if file opened successfully
     if (!inputFile)
     {
         std::cerr << "Error: Unable to open data file." << std::endl;
         return 1;
     }
 
-    // create BST
+    // Create BST object
     Bst<int> intTree;
 
-    // read values and insert into BST
+    // Read integers and insert into BST
     int value;
     while (inputFile >> value)
     {
@@ -46,34 +46,36 @@ int main()
 
     inputFile.close();
 
-    // display header
+    // Display header
     std::cout << "===== Integer BST Demo =====" << std::endl;
 
-    // check BST validity
+    // Check BST validity
     std::cout << "BST valid: "
               << (intTree.CheckBST() ? "Yes" : "No") << std::endl;
 
-    // traversals (UPDATED: pass function pointer)
+    // Inorder traversal
     std::cout << "InOrder: ";
     intTree.InOrder(PrintInt);
     std::cout << std::endl;
 
+    // Preorder traversal
     std::cout << "PreOrder: ";
     intTree.PreOrder(PrintInt);
     std::cout << std::endl;
 
+    // Postorder traversal
     std::cout << "PostOrder: ";
     intTree.PostOrder(PrintInt);
     std::cout << std::endl;
 
-    // search tests
+    // Search test
     std::cout << "Search 40: "
               << (intTree.Search(40) ? "Found" : "Not found") << std::endl;
 
     std::cout << "Search 99: "
               << (intTree.Search(99) ? "Found" : "Not found") << std::endl;
 
-    // duplicate test
+    // Duplicate insert test
     std::cout << "Insert duplicate 50" << std::endl;
     intTree.Insert(50);
 

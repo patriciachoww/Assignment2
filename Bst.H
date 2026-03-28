@@ -3,242 +3,152 @@
 
 #include <iostream>
 
+/**
+ * @file Bst.H
+ * @brief Template Binary Search Tree class.
+ *
+ * This class stores data in binary search tree form.
+ * It supports insertion, searching, traversal, deep copying,
+ * destruction, and BST validation.
+ *
+ * Traversal routines use function pointers so client code can
+ * decide what action to perform on each visited item.
+ */
 template <class T>
 class Bst
 {
 public:
+    /**
+     * @brief Function pointer type for simple traversal callbacks.
+     */
+    typedef void (*VisitFunc)(const T&);
+
+    /**
+     * @brief Function pointer type for traversal callbacks with context.
+     */
+    typedef void (*VisitFuncCtx)(const T&, void*);
+
+    /**
+     * @brief Construct an empty BST.
+     */
     Bst();
+
+    /**
+     * @brief Copy constructor.
+     * @param other Another BST to copy from.
+     */
     Bst(const Bst<T>& other);
+
+    /**
+     * @brief Assignment operator.
+     * @param other Another BST to assign from.
+     * @return Reference to this BST.
+     */
     Bst<T>& operator=(const Bst<T>& other);
+
+    /**
+     * @brief Destructor.
+     */
     ~Bst();
 
-    void Insert(const T& item);       // insert value
-    bool Search(const T& item) const; // find value
+    /**
+     * @brief Insert an item into the BST.
+     * @param item The item to insert.
+     */
+    void Insert(const T& item);
 
-    void InOrder() const;   // LNR
-    void PreOrder() const;  // NLR
-    void PostOrder() const; // LRN
+    /**
+     * @brief Search for an item in the BST.
+     * @param item The item to search for.
+     * @return True if found, otherwise false.
+     */
+    bool Search(const T& item) const;
 
-    bool CheckBST() const;  // validate BST
-    bool IsEmpty() const;   // check empty
+    /**
+     * @brief Traverse the tree in inorder.
+     * @param visit Callback function applied to each item.
+     */
+    void InOrder(VisitFunc visit) const;
+
+    /**
+     * @brief Traverse the tree in preorder.
+     * @param visit Callback function applied to each item.
+     */
+    void PreOrder(VisitFunc visit) const;
+
+    /**
+     * @brief Traverse the tree in postorder.
+     * @param visit Callback function applied to each item.
+     */
+    void PostOrder(VisitFunc visit) const;
+
+    /**
+     * @brief Traverse the tree in inorder with context data.
+     * @param visit Callback function applied to each item.
+     * @param context Extra user-defined data.
+     */
+    void InOrder(VisitFuncCtx visit, void* context) const;
+
+    /**
+     * @brief Traverse the tree in preorder with context data.
+     * @param visit Callback function applied to each item.
+     * @param context Extra user-defined data.
+     */
+    void PreOrder(VisitFuncCtx visit, void* context) const;
+
+    /**
+     * @brief Traverse the tree in postorder with context data.
+     * @param visit Callback function applied to each item.
+     * @param context Extra user-defined data.
+     */
+    void PostOrder(VisitFuncCtx visit, void* context) const;
+
+    /**
+     * @brief Check whether the tree satisfies BST rules.
+     * @return True if valid BST, otherwise false.
+     */
+    bool CheckBST() const;
+
+    /**
+     * @brief Check whether the tree is empty.
+     * @return True if empty, otherwise false.
+     */
+    bool IsEmpty() const;
 
 private:
+    /**
+     * @brief Tree node structure.
+     */
     struct Node
     {
-        T item;
-        Node* left;
-        Node* right;
+        T item;        ///< Stored data
+        Node* left;    ///< Pointer to left child
+        Node* right;   ///< Pointer to right child
 
-        Node(const T& value); // create node
+        /**
+         * @brief Construct a node with a value.
+         * @param value Data to store.
+         */
+        Node(const T& value);
     };
 
-    Node* m_root;
+    Node* m_root;  ///< Root pointer of the BST
 
 private:
     void InsertRecursive(Node*& cur, const T& item);
     bool SearchRecursive(const Node* cur, const T& item) const;
 
-    void InOrderRecursive(const Node* cur) const;
-    void PreOrderRecursive(const Node* cur) const;
-    void PostOrderRecursive(const Node* cur) const;
+    void InOrderRecursive(const Node* cur, VisitFunc visit) const;
+    void PreOrderRecursive(const Node* cur, VisitFunc visit) const;
+    void PostOrderRecursive(const Node* cur, VisitFunc visit) const;
 
-    void DestroyRecursive(Node*& cur);       // free memory
+    void InOrderRecursive(const Node* cur, VisitFuncCtx visit, void* context) const;
+    void PreOrderRecursive(const Node* cur, VisitFuncCtx visit, void* context) const;
+    void PostOrderRecursive(const Node* cur, VisitFuncCtx visit, void* context) const;
+
+    void DestroyRecursive(Node*& cur);
     Node* CloneRecursive(const Node* cur) const;
-
-    bool CheckBSTRecursive(const Node* cur,
-                           const T* low,
-                           const T* high) const;
+    bool CheckBSTRecursive(const Node* cur, const T* low, const T* high) const;
 };
-
-// ===== Implementation =====
-
-template <class T>
-Bst<T>::Node::Node(const T& value)
-    : item(value), left(nullptr), right(nullptr)
-{
-}
-
-template <class T>
-Bst<T>::Bst()
-    : m_root(nullptr)
-{
-}
-
-template <class T>
-Bst<T>::Bst(const Bst<T>& other)
-    : m_root(nullptr)
-{
-    m_root = CloneRecursive(other.m_root); // deep copy
-}
-
-template <class T>
-Bst<T>& Bst<T>::operator=(const Bst<T>& other)
-{
-    if (this != &other)
-    {
-        DestroyRecursive(m_root);            // clear old
-        m_root = CloneRecursive(other.m_root); // copy new
-    }
-    return *this;
-}
-
-template <class T>
-Bst<T>::~Bst()
-{
-    DestroyRecursive(m_root); // cleanup
-}
-
-template <class T>
-bool Bst<T>::IsEmpty() const
-{
-    return m_root == nullptr;
-}
-
-template <class T>
-void Bst<T>::Insert(const T& item)
-{
-    InsertRecursive(m_root, item);
-}
-
-template <class T>
-void Bst<T>::InsertRecursive(Node*& cur, const T& item)
-{
-    if (cur == nullptr)
-    {
-        cur = new Node(item); // new node
-        return;
-    }
-
-    if (item < cur->item)
-    {
-        InsertRecursive(cur->left, item);
-    }
-    else if (cur->item < item)
-    {
-        InsertRecursive(cur->right, item);
-    }
-    // duplicate → ignore
-}
-
-template <class T>
-bool Bst<T>::Search(const T& item) const
-{
-    return SearchRecursive(m_root, item);
-}
-
-template <class T>
-bool Bst<T>::SearchRecursive(const Node* cur, const T& item) const
-{
-    if (cur == nullptr)
-        return false;
-
-    if (item == cur->item)
-        return true;
-
-    if (item < cur->item)
-        return SearchRecursive(cur->left, item);
-
-    return SearchRecursive(cur->right, item);
-}
-
-template <class T>
-void Bst<T>::InOrder() const
-{
-    InOrderRecursive(m_root);
-    std::cout << std::endl;
-}
-
-template <class T>
-void Bst<T>::InOrderRecursive(const Node* cur) const
-{
-    if (cur == nullptr) return;
-
-    InOrderRecursive(cur->left);
-    std::cout << cur->item << " ";
-    InOrderRecursive(cur->right);
-}
-
-template <class T>
-void Bst<T>::PreOrder() const
-{
-    PreOrderRecursive(m_root);
-    std::cout << std::endl;
-}
-
-template <class T>
-void Bst<T>::PreOrderRecursive(const Node* cur) const
-{
-    if (cur == nullptr) return;
-
-    std::cout << cur->item << " ";
-    PreOrderRecursive(cur->left);
-    PreOrderRecursive(cur->right);
-}
-
-template <class T>
-void Bst<T>::PostOrder() const
-{
-    PostOrderRecursive(m_root);
-    std::cout << std::endl;
-}
-
-template <class T>
-void Bst<T>::PostOrderRecursive(const Node* cur) const
-{
-    if (cur == nullptr) return;
-
-    PostOrderRecursive(cur->left);
-    PostOrderRecursive(cur->right);
-    std::cout << cur->item << " ";
-}
-
-template <class T>
-void Bst<T>::DestroyRecursive(Node*& cur)
-{
-    if (cur == nullptr) return;
-
-    DestroyRecursive(cur->left);
-    DestroyRecursive(cur->right);
-    delete cur;
-    cur = nullptr; // avoid dangling
-}
-
-template <class T>
-typename Bst<T>::Node* Bst<T>::CloneRecursive(const Node* cur) const
-{
-    if (cur == nullptr)
-        return nullptr;
-
-    Node* newNode = new Node(cur->item);
-
-    newNode->left = CloneRecursive(cur->left);
-    newNode->right = CloneRecursive(cur->right);
-
-    return newNode;
-}
-
-template <class T>
-bool Bst<T>::CheckBST() const
-{
-    return CheckBSTRecursive(m_root, nullptr, nullptr);
-}
-
-template <class T>
-bool Bst<T>::CheckBSTRecursive(const Node* cur,
-                               const T* low,
-                               const T* high) const
-{
-    if (cur == nullptr)
-        return true;
-
-    if (low != nullptr && !( *low < cur->item ))
-        return false;
-
-    if (high != nullptr && !( cur->item < *high ))
-        return false;
-
-    return CheckBSTRecursive(cur->left, low, &cur->item) &&
-           CheckBSTRecursive(cur->right, &cur->item, high);
-}
 
 #endif

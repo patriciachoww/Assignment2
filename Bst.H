@@ -4,7 +4,7 @@
 #include <iostream>
 
 /**
- * @file Bst.H
+ * @file Bst.h
  * @brief Template Binary Search Tree class.
  *
  * Stores items in Binary Search Tree form.
@@ -24,11 +24,6 @@ public:
      * @brief Callback type for traversal.
      */
     typedef void (*VisitFunc)(const T&);
-
-    /**
-     * @brief Callback type for traversal with context.
-     */
-    typedef void (*VisitFuncCtx)(const T&, void*);
 
     /**
      * @brief Construct an empty BST.
@@ -85,27 +80,6 @@ public:
     void PostOrder(VisitFunc visit) const;
 
     /**
-     * @brief Traverse the tree in inorder with context.
-     * @param visit Callback function.
-     * @param context Extra user data.
-     */
-    void InOrder(VisitFuncCtx visit, void* context) const;
-
-    /**
-     * @brief Traverse the tree in preorder with context.
-     * @param visit Callback function.
-     * @param context Extra user data.
-     */
-    void PreOrder(VisitFuncCtx visit, void* context) const;
-
-    /**
-     * @brief Traverse the tree in postorder with context.
-     * @param visit Callback function.
-     * @param context Extra user data.
-     */
-    void PostOrder(VisitFuncCtx visit, void* context) const;
-
-    /**
      * @brief Check whether the BST is valid.
      * @return True if valid, false otherwise.
      */
@@ -148,10 +122,6 @@ private:
     void InOrderRecursive(const Node* cur, VisitFunc visit) const;
     void PreOrderRecursive(const Node* cur, VisitFunc visit) const;
     void PostOrderRecursive(const Node* cur, VisitFunc visit) const;
-
-    void InOrderRecursive(const Node* cur, VisitFuncCtx visit, void* context) const;
-    void PreOrderRecursive(const Node* cur, VisitFuncCtx visit, void* context) const;
-    void PostOrderRecursive(const Node* cur, VisitFuncCtx visit, void* context) const;
 
     void DestroyRecursive(Node*& cur);
     Node* CloneRecursive(const Node* cur) const;
@@ -244,7 +214,6 @@ void Bst<T>::InsertRecursive(Node*& cur, const T& item)
     {
         InsertRecursive(cur->right, item);
     }
-    // Duplicate items are ignored.
 }
 
 /**
@@ -361,90 +330,6 @@ void Bst<T>::PostOrderRecursive(const Node* cur, VisitFunc visit) const
         PostOrderRecursive(cur->left, visit);
         PostOrderRecursive(cur->right, visit);
         visit(cur->item);
-    }
-}
-
-/**
- * @brief Traverse the tree in inorder with context.
- * @param visit Callback function.
- * @param context Extra user data.
- */
-template <class T>
-void Bst<T>::InOrder(VisitFuncCtx visit, void* context) const
-{
-    InOrderRecursive(m_root, visit, context);
-}
-
-/**
- * @brief Inorder traversal helper with context.
- * @param cur Current node pointer.
- * @param visit Callback function.
- * @param context Extra user data.
- */
-template <class T>
-void Bst<T>::InOrderRecursive(const Node* cur, VisitFuncCtx visit, void* context) const
-{
-    if (cur != nullptr)
-    {
-        InOrderRecursive(cur->left, visit, context);
-        visit(cur->item, context);
-        InOrderRecursive(cur->right, visit, context);
-    }
-}
-
-/**
- * @brief Traverse the tree in preorder with context.
- * @param visit Callback function.
- * @param context Extra user data.
- */
-template <class T>
-void Bst<T>::PreOrder(VisitFuncCtx visit, void* context) const
-{
-    PreOrderRecursive(m_root, visit, context);
-}
-
-/**
- * @brief Preorder traversal helper with context.
- * @param cur Current node pointer.
- * @param visit Callback function.
- * @param context Extra user data.
- */
-template <class T>
-void Bst<T>::PreOrderRecursive(const Node* cur, VisitFuncCtx visit, void* context) const
-{
-    if (cur != nullptr)
-    {
-        visit(cur->item, context);
-        PreOrderRecursive(cur->left, visit, context);
-        PreOrderRecursive(cur->right, visit, context);
-    }
-}
-
-/**
- * @brief Traverse the tree in postorder with context.
- * @param visit Callback function.
- * @param context Extra user data.
- */
-template <class T>
-void Bst<T>::PostOrder(VisitFuncCtx visit, void* context) const
-{
-    PostOrderRecursive(m_root, visit, context);
-}
-
-/**
- * @brief Postorder traversal helper with context.
- * @param cur Current node pointer.
- * @param visit Callback function.
- * @param context Extra user data.
- */
-template <class T>
-void Bst<T>::PostOrderRecursive(const Node* cur, VisitFuncCtx visit, void* context) const
-{
-    if (cur != nullptr)
-    {
-        PostOrderRecursive(cur->left, visit, context);
-        PostOrderRecursive(cur->right, visit, context);
-        visit(cur->item, context);
     }
 }
 

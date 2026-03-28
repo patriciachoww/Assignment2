@@ -3,15 +3,24 @@
  * @brief Demo program for Integer Binary Search Tree (BST).
  *
  * Reads integers from file, inserts into BST,
- * and demonstrates basic operations.
+ * and demonstrates operations using traversal callbacks.
  *
  * @author Patricia
- * @date 25/03/2026
+ * @date 28/03/2026
  */
 
-#include "../Bst.h"
+#include "../Bst.H"
 #include <iostream>
 #include <fstream>
+
+/**
+ * @brief Print integer value (callback function).
+ * @param value Integer to print.
+ */
+void PrintInt(const int& value)
+{
+    std::cout << value << " ";
+}
 
 int main()
 {
@@ -35,6 +44,8 @@ int main()
         intTree.Insert(value);
     }
 
+    inputFile.close();
+
     // display header
     std::cout << "===== Integer BST Demo =====" << std::endl;
 
@@ -42,15 +53,18 @@ int main()
     std::cout << "BST valid: "
               << (intTree.CheckBST() ? "Yes" : "No") << std::endl;
 
-    // traversals
+    // traversals (UPDATED: pass function pointer)
     std::cout << "InOrder: ";
-    intTree.InOrder();
+    intTree.InOrder(PrintInt);
+    std::cout << std::endl;
 
     std::cout << "PreOrder: ";
-    intTree.PreOrder();
+    intTree.PreOrder(PrintInt);
+    std::cout << std::endl;
 
     std::cout << "PostOrder: ";
-    intTree.PostOrder();
+    intTree.PostOrder(PrintInt);
+    std::cout << std::endl;
 
     // search tests
     std::cout << "Search 40: "
@@ -64,7 +78,8 @@ int main()
     intTree.Insert(50);
 
     std::cout << "InOrder after duplicate insert: ";
-    intTree.InOrder();
+    intTree.InOrder(PrintInt);
+    std::cout << std::endl;
 
     return 0;
 }

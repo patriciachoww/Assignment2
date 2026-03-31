@@ -1,102 +1,156 @@
-/**
- * @file Date.cpp
- * @brief Implementation of Date class.
- *
- * This class stores a calendar date (day, month, year)
- * and provides basic access methods. It also defines
- * comparison operators so that Date objects can be used
- * in ordered structures such as a Binary Search Tree (BST).
- *
- * @author Patricia
- */
-
 #include "Date.h"
+#include <iostream>
 
-// --- Constructors ---
-
-Date::Date() : day(0), month(0), year(0)
+/**
+ * @brief Default constructor.
+ */
+Date::Date()
+    : day(0), month(0), year(0)
 {
-    // Default date initialized to 0/0/0
 }
 
-Date::Date(unsigned d, unsigned m, unsigned y) : day(d), month(m), year(y)
+/**
+ * @brief Parameterized constructor.
+ * @param d Day
+ * @param m Month
+ * @param y Year
+ */
+Date::Date(unsigned d, unsigned m, unsigned y)
+    : day(d), month(m), year(y)
 {
-    // Initialize date with given values
 }
 
-// --- Getter methods ---
-
+/**
+ * @brief Get day.
+ * @return Day value
+ */
 unsigned Date::GetDay() const
 {
     return day;
 }
 
-unsigned Date::GetMonth() const
-{
-    return month;
-}
-
-unsigned Date::GetYear() const
-{
-    return year;
-}
-
-// --- Setter methods ---
-
+/**
+ * @brief Set day.
+ * @param d Day value
+ */
 void Date::SetDay(unsigned d)
 {
     day = d;
 }
 
+/**
+ * @brief Get month.
+ * @return Month value
+ */
+unsigned Date::GetMonth() const
+{
+    return month;
+}
+
+/**
+ * @brief Set month.
+ * @param m Month value
+ */
 void Date::SetMonth(unsigned m)
 {
     month = m;
 }
 
+/**
+ * @brief Get year.
+ * @return Year value
+ */
+unsigned Date::GetYear() const
+{
+    return year;
+}
+
+/**
+ * @brief Set year.
+ * @param y Year value
+ */
 void Date::SetYear(unsigned y)
 {
     year = y;
 }
 
-// ------------------------------------------------------------
-// Comparison operators
-// These are required so Date objects can be stored in a BST.
-// Ordering is based on chronological sequence:
-// year → month → day
-// ------------------------------------------------------------
-
+/**
+ * @brief Compare if lhs is earlier than rhs.
+ * @param lhs Left date
+ * @param rhs Right date
+ * @return True if lhs is earlier
+ */
 bool operator<(const Date& lhs, const Date& rhs)
 {
-    // Compare by year first
     if (lhs.GetYear() != rhs.GetYear())
+    {
         return lhs.GetYear() < rhs.GetYear();
+    }
 
-    // If years are equal, compare months
     if (lhs.GetMonth() != rhs.GetMonth())
+    {
         return lhs.GetMonth() < rhs.GetMonth();
+    }
 
-    // If months are also equal, compare days
     return lhs.GetDay() < rhs.GetDay();
 }
 
+/**
+ * @brief Compare if lhs is later than rhs.
+ * @param lhs Left date
+ * @param rhs Right date
+ * @return True if lhs is later
+ */
 bool operator>(const Date& lhs, const Date& rhs)
 {
     return rhs < lhs;
 }
 
+/**
+ * @brief Compare if lhs is earlier than or equal to rhs.
+ * @param lhs Left date
+ * @param rhs Right date
+ * @return True if lhs <= rhs
+ */
 bool operator<=(const Date& lhs, const Date& rhs)
 {
     return !(lhs > rhs);
 }
 
+/**
+ * @brief Compare if lhs is later than or equal to rhs.
+ * @param lhs Left date
+ * @param rhs Right date
+ * @return True if lhs >= rhs
+ */
 bool operator>=(const Date& lhs, const Date& rhs)
 {
     return !(lhs < rhs);
 }
 
+/**
+ * @brief Check if two dates are equal.
+ * @param lhs Left date
+ * @param rhs Right date
+ * @return True if equal
+ */
 bool operator==(const Date& lhs, const Date& rhs)
 {
-    return lhs.GetYear()  == rhs.GetYear()  &&
+    return lhs.GetDay() == rhs.GetDay() &&
            lhs.GetMonth() == rhs.GetMonth() &&
-           lhs.GetDay()   == rhs.GetDay();
+           lhs.GetYear() == rhs.GetYear();
+}
+
+/**
+ * @brief Output Date to stream.
+ * @param os Output stream
+ * @param d Date object
+ * @return Output stream
+ */
+std::ostream& operator<<(std::ostream& os, const Date& d)
+{
+    os << d.GetDay() << "/"
+       << d.GetMonth() << "/"
+       << d.GetYear();
+    return os;
 }

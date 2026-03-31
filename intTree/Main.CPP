@@ -19,6 +19,24 @@
  */
 void PrintInt(const int& value);
 
+/**
+ * @brief Test BST passed by value.
+ * @param tree Copy of BST.
+ */
+void TestByValue(Bst<int> tree);
+
+/**
+ * @brief Test BST passed by const reference.
+ * @param tree Constant reference to BST.
+ */
+void TestByConstRef(const Bst<int>& tree);
+
+/**
+ * @brief Test BST passed by reference.
+ * @param tree Reference to BST.
+ */
+void TestByRef(Bst<int>& tree);
+
 int main()
 {
     // Open input file
@@ -80,6 +98,16 @@ int main()
     intTree.InOrder(PrintInt);
     std::cout << std::endl;
 
+    // Pass-by tests
+    std::cout << "\nPass by value: ";
+    TestByValue(intTree);
+
+    std::cout << "Pass by const reference: ";
+    TestByConstRef(intTree);
+
+    std::cout << "Pass by reference: ";
+    TestByRef(intTree);
+
     return 0;
 }
 
@@ -90,4 +118,34 @@ int main()
 void PrintInt(const int& value)
 {
     std::cout << value << " ";
+}
+
+/**
+ * @brief Test BST passed by value.
+ * @param tree Copy of BST.
+ */
+void TestByValue(Bst<int> tree)
+{
+    tree.InOrder(PrintInt);
+    std::cout << std::endl;
+}
+
+/**
+ * @brief Test BST passed by const reference.
+ * @param tree Constant reference to BST.
+ */
+void TestByConstRef(const Bst<int>& tree)
+{
+    tree.InOrder(PrintInt);
+    std::cout << std::endl;
+}
+
+/**
+ * @brief Test BST passed by reference.
+ * @param tree Reference to BST.
+ */
+void TestByRef(Bst<int>& tree)
+{
+    tree.InOrder(PrintInt);
+    std::cout << std::endl;
 }

@@ -2,13 +2,8 @@
  * @file Date.h
  * @brief Defines the Date class used for BST operations.
  *
- * The Date class stores a calendar date using day, month, and year.
- * It provides getter and setter functions, as well as comparison
- * operators required for use in a Binary Search Tree (BST).
- *
- * Comparison operators are implemented as non-member functions
- * because ordering is not a storage responsibility of the class,
- * but is required externally (e.g. for BST operations).
+ * Stores a simple date using day, month, and year.
+ * Also declares comparison and output operators.
  *
  * @author Patricia
  * @date 25/03/2026
@@ -23,9 +18,9 @@
  * @class Date
  * @brief Represents a simple date (day, month, year).
  *
- * This class encapsulates a date and provides access
- * and modification methods. It does not handle formatting
- * or validation logic.
+ * This class stores date values and provides getter and setter
+ * functions. Comparison operators are declared as non-member
+ * functions so Date objects can be ordered in a BST.
  */
 class Date
 {
@@ -33,15 +28,15 @@ public:
     /**
      * @brief Default constructor.
      *
-     * Initializes date to 0/0/0.
+     * Initializes the date to 0/0/0.
      */
     Date();
 
     /**
      * @brief Parameterized constructor.
-     * @param d Day
-     * @param m Month
-     * @param y Year
+     * @param d Day value
+     * @param m Month value
+     * @param y Year value
      */
     Date(unsigned d, unsigned m, unsigned y);
 
@@ -120,18 +115,18 @@ bool operator<=(const Date& lhs, const Date& rhs);
 bool operator>=(const Date& lhs, const Date& rhs);
 
 /**
- * @brief Check if two dates are equal.
+ * @brief Check whether two dates are equal.
  * @param lhs Left-hand Date
  * @param rhs Right-hand Date
- * @return True if equal
+ * @return True if both dates are equal
  */
 bool operator==(const Date& lhs, const Date& rhs);
 
 /**
- * @brief Output Date to stream.
+ * @brief Output a Date to a stream.
  * @param os Output stream
  * @param d Date object
- * @return Output stream
+ * @return Reference to output stream
  */
 std::ostream& operator<<(std::ostream& os, const Date& d);
 

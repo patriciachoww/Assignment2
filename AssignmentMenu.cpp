@@ -2,10 +2,12 @@
  * @file AssignmentMenu.cpp
  * @brief Implementation of Assignment 2 menu functions.
  *
- * Handles user interaction for all menu options.
+ * Handles all user interaction and menu options
+ * for weather data analysis.
  *
  * @author Patricia
- * @date 31/03/2026
+ * @version 1.0
+ * @date 04/04/2026
  */
 
 #include "AssignmentMenu.h"
@@ -15,10 +17,11 @@
 #include <iostream>
 #include <iomanip>
 #include <limits>
+#include <cmath>
 
 namespace
 {
-    WeatherDataStore g_data;
+    WeatherDataStore g_data;   // Global data store
 
     const char* MONTH_NAMES[12] =
     {
@@ -28,10 +31,13 @@ namespace
     };
 
     /**
-     * @brief Read a valid integer from user input.
-     * @param prompt Prompt text
-     * @param value Output integer
-     * @return True if input is valid
+     * @brief Reads a valid integer input from user.
+     *
+     * Ensures input is valid and clears error state if needed.
+     *
+     * @param prompt - message displayed to user
+     * @param value - variable to store input
+     * @return bool - true if input is valid, false otherwise
      */
     bool ReadInt(const char* prompt, int& value)
     {
@@ -40,18 +46,18 @@ namespace
 
         if (std::cin.fail())
         {
-            std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cin.clear();   // Reset error flag
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear buffer
             std::cout << "Invalid input." << std::endl;
             return false;
         }
 
-        return true;
+        return true;   // Valid input
     }
 }
 
 /**
- * @brief Display the assignment menu.
+ * @brief Displays the main menu options.
  */
 void ShowMenu()
 {
@@ -65,22 +71,18 @@ void ShowMenu()
 }
 
 /**
- * @brief Handle option 1.
+ * @brief Handles menu option 1.
+ *
+ * Calculates average wind speed and standard deviation
+ * for a given month and year.
  */
 void Option1()
 {
     int month;
     int year;
 
-    if (!ReadInt("Enter month (1-12): ", month))
-    {
-        return;
-    }
-
-    if (!ReadInt("Enter year: ", year))
-    {
-        return;
-    }
+    if (!ReadInt("Enter month (1-12): ", month)) return;
+    if (!ReadInt("Enter year: ", year)) return;
 
     if (month < 1 || month > 12)
     {
@@ -88,7 +90,7 @@ void Option1()
         return;
     }
 
-    Vector<double> speeds = g_data.GetSpeedsForMonthYear(month, year);
+    Vector<double> speeds = g_data.GetSpeedsForMonthYear(month, year); // Retrieve speeds
 
     if (speeds.Size() == 0)
     {
@@ -96,28 +98,29 @@ void Option1()
         return;
     }
 
+    std::cout << std::fixed << std::setprecision(2);
     std::cout << MONTH_NAMES[month - 1] << " " << year << std::endl;
     std::cout << "Average speed: " << Mean(speeds) << " km/h" << std::endl;
     std::cout << "Sample stdev: " << SampleStdev(speeds) << std::endl;
 }
 
 /**
- * @brief Handle option 2.
+ * @brief Handles menu option 2.
+ *
+ * Displays monthly temperature statistics for a given year.
  */
 void Option2()
 {
     int year;
 
-    if (!ReadInt("Enter year: ", year))
-    {
-        return;
-    }
+    if (!ReadInt("Enter year: ", year)) return;
 
+    std::cout << std::fixed << std::setprecision(2);
     std::cout << year << std::endl;
 
     for (int month = 1; month <= 12; month++)
     {
-        Vector<double> temps = g_data.GetTempsForMonthYear(month, year);
+        Vector<double> temps = g_data.GetTempsForMonthYear(month, year); // Get temperature data
 
         if (temps.Size() == 0)
         {
@@ -134,16 +137,16 @@ void Option2()
 }
 
 /**
- * @brief Handle option 3.
+ * @brief Handles menu option 3.
+ *
+ * Calculates correlation between wind, temperature,
+ * and solar radiation for a given month.
  */
 void Option3()
 {
     int month;
 
-    if (!ReadInt("Enter month (1-12): ", month))
-    {
-        return;
-    }
+    if (!ReadInt("Enter month (1-12): ", month)) return;
 
     if (month < 1 || month > 12)
     {
@@ -151,30 +154,40 @@ void Option3()
         return;
     }
 
-    Vector<double> s = g_data.GetSpeedsForMonthAllYears(month);
-    Vector<double> t = g_data.GetTempsForMonthAllYears(month);
-    Vector<double> r = g_data.GetSolarForMonthAllYears(month);
+    Vector<double> s = g_data.GetSpeedsForMonthAllYears(month); // Wind
+    Vector<double> t = g_data.GetTempsForMonthAllYears(month);  // Temperature
+    Vector<double> r = g_data.GetSolarForMonthAllYears(month);  // Solar
 
+    double st = SPCC(s, t);
+    double sr = SPCC(s, r);
+    double tr = SPCC(t, r);
+
+    if (std::fabs(st) < 1e-9) st = 0.0;
+    if (std::fabs(sr) < 1e-9) sr = 0.0;
+    if (std::fabs(tr) < 1e-9) tr = 0.0;
+
+    std::cout << std::fixed << std::setprecision(2);
     std::cout << "Sample Pearson Correlation Coefficient for "
               << MONTH_NAMES[month - 1] << std::endl;
-    std::cout << "S_T: " << SPCC(s, t) << std::endl;
-    std::cout << "S_R: " << SPCC(s, r) << std::endl;
-    std::cout << "T_R: " << SPCC(t, r) << std::endl;
+
+    std::cout << "S_T: " << st << std::endl;
+    std::cout << "S_R: " << sr << std::endl;
+    std::cout << "T_R: " << tr << std::endl;
 }
 
 /**
- * @brief Handle option 4.
+ * @brief Handles menu option 4.
+ *
+ * Outputs monthly wind, temperature, and solar data
+ * into a CSV file.
  */
 void Option4()
 {
     int year;
 
-    if (!ReadInt("Enter year: ", year))
-    {
-        return;
-    }
+    if (!ReadInt("Enter year: ", year)) return;
 
-    std::ofstream outFile("WindTempSolar.csv");
+    std::ofstream outFile("WindTempSolar.csv"); // Create output file
 
     if (!outFile.is_open())
     {
@@ -182,9 +195,10 @@ void Option4()
         return;
     }
 
+    outFile << std::fixed << std::setprecision(2);
     outFile << year << std::endl;
 
-    bool hasAnyData = false;
+    bool hasAnyData = false; // Track if any data exists
 
     for (int month = 1; month <= 12; month++)
     {
@@ -194,7 +208,7 @@ void Option4()
 
         if (speeds.Size() == 0 && temps.Size() == 0 && solar.Size() == 0)
         {
-            continue;
+            continue; // Skip empty months
         }
 
         hasAnyData = true;
@@ -232,13 +246,15 @@ void Option4()
         outFile << "No Data" << std::endl;
     }
 
-    outFile.close();
+    outFile.close(); // Close file
 
     std::cout << "WindTempSolar.csv written successfully." << std::endl;
 }
 
 /**
- * @brief Handle option 5.
+ * @brief Handles menu option 5.
+ *
+ * Displays exit message.
  */
 void Option5()
 {
@@ -246,7 +262,9 @@ void Option5()
 }
 
 /**
- * @brief Run the menu loop.
+ * @brief Runs the main menu loop.
+ *
+ * Loads data and repeatedly displays menu until exit.
  */
 void RunMenu()
 {
@@ -265,7 +283,7 @@ void RunMenu()
 
         if (std::cin.fail())
         {
-            std::cin.clear();
+            std::cin.clear();   // Reset input state
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             std::cout << "Invalid input." << std::endl;
             continue;
@@ -273,25 +291,15 @@ void RunMenu()
 
         switch (choice)
         {
-            case 1:
-                Option1();
-                break;
-            case 2:
-                Option2();
-                break;
-            case 3:
-                Option3();
-                break;
-            case 4:
-                Option4();
-                break;
-            case 5:
-                Option5();
-                break;
+            case 1: Option1(); break; // Wind stats
+            case 2: Option2(); break; // Temperature stats
+            case 3: Option3(); break; // Correlation
+            case 4: Option4(); break; // CSV output
+            case 5: Option5(); break; // Exit
             default:
                 std::cout << "Invalid choice." << std::endl;
                 break;
         }
 
-    } while (choice != 5);
+    } while (choice != 5); // Loop until exit
 }
